@@ -2,7 +2,7 @@
 
 The MATLAB code:
 
-
+```
 function fun = GA_CO2Isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
@@ -114,3 +114,4 @@ function fun = nlconsy1(yKp_exp)
     fun=@nlconsx;
     
 end
+```
