@@ -56,19 +56,6 @@ function fun = GA_CO2Isotherm
         title(sprintf('System Pressure: %d atm',i));
         text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',fval));
     end
-    
-    % Best Fit (SSR=0.1508)
-    % optpars=[21.266981510758630,14.391034096337718,-4.765695273426656,-5.567920695194216,0.704153380029325,1.385644740685691,3.232959521887631,-1.260067616278099e+02]
-    % Values for the KT-CPM parameters (in units of mmol/g/atm)
-%     b1=1.004;
-%     c1=8.023e-11;
-%     b2=1.520e-08;
-%     c2=3.995e-2;
-%     b3=4.276e-2;
-%     c3=2.808e-3;
-%     gamma=5.323e-3;
-%     theta=5.023e-2;
-%     pars=[b1 b2 b3 c1 c2 c3 gamma theta];
 end
 
 function fun = Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta)
