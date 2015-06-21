@@ -1,7 +1,7 @@
 # Genetic-Algorithm
 This code uses MATLAB's inherent function 'ga' to perform a genetic algorithm in order to find the minimum of a function - in this case the smallest sum of sqaured residual (SSR) between model parameters and experimental values within an excel file.
 
-**The MATLAB code:**
+**The MATLAB code for GA_CO2Isotherm:**
 ```
 function fun = GA_CO2Isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
