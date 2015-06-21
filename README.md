@@ -106,12 +106,12 @@ end
 ```
 
 **Example of a MATLAB Command Window Session:**
-![](https://github.com/pamyo045/Genetic-Algorithm/tree/master/Resources/Image1.png)
+![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image1.png)
 
 **Example of the MATLAB code output:**
-![](https://github.com/pamyo045/Genetic-Algorithm/tree/master/Resources/Image2.png)
+![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image2.png)
 
 ## GA_CO2Isotherm_PlotOptPars.m
 
 **Example of the MATLAB code output:**
-![](https://github.com/pamyo045/Genetic-Algorithm/tree/master/Resources/Image3.png)
+![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image3.png)
