@@ -1,4 +1,4 @@
-function fun = GA_CO2Isotherm_ver1
+function fun = GA_CO2Isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
     % XLSrange: A4:F22
