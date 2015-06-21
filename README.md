@@ -1,7 +1,6 @@
 # Genetic-Algorithm
 
-The MATLAB code:
-
+**The MATLAB code:**
 ```
 function fun = GA_CO2Isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
@@ -103,8 +102,8 @@ function fun = nlconsy1(yKp_exp)
 end
 ```
 
-Example of a MATLAB Command Window Session:
+**Example of a MATLAB Command Window Session:**
 ![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Image1.png)
 
-Example of the MATLAB code output:
+**Example of the MATLAB code output:**
 ![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Image2.png)
