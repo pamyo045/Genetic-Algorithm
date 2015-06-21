@@ -112,6 +112,7 @@ end
 ![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image2.png)
 
 ## GA_CO2Isotherm_PlotOptPars.m
+This code simply displays a figure with all the optimal parameters found for GA_CO2Isotherm.m after running the code multiple different times which resulted in the lowest SSR. 
 
 **Example of the MATLAB code output:**
-![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image3.png)
+![](https://github.com/pamyo045/Genetic-Algorithm/blob/master/Resources/Image3.PNG)
