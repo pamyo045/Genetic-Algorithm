@@ -2,13 +2,32 @@ function fun = GA_CO2Isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
     % XLSrange: A4:F22
-    XLSname = 'Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx';
-    XLSsheet = 'Kp exp - curve fits';
-    XLSrange = 'A4:F22';
+
+    FilterSpec={'*.xls;*xlsx','Excel files (*.xls,*.xlsx)'};
+
+    [FileName,PathName,~]=uigetfile(...
+        FilterSpec,'Pick a file','MultiSelect','on');
     
+    XLSname=FileName;
+    
+    OldPath=cd(PathName); % stores old path and changes to new path
+    
+    [~,sheetNames]=xlsfinfo(FileName);
+    
+    [sheetIndex,~]=listdlg('PromptString','Select a file:',...
+                'SelectionMode','single',...
+                'ListString',sheetNames);
+    XLSsheet=sheetNames{sheetIndex};
+    
+    prompt = 'Enter Excel sheet range of the experimental data:';
+    dlg_title = 'Select range';
+    num_lines = 1;
+    def = {'A4:F22'};
+    XLSrange = inputdlg(prompt,dlg_title,num_lines,def);
+
     % extract experimental Kp values from Excel file and assign each col to
     % appropriate pressure trials
-    XLSdata = readtable(XLSname,'sheet',XLSsheet,'range',XLSrange,'readvariablename',false);
+    XLSdata = readtable(XLSname,'sheet',XLSsheet,'range',XLSrange{1},'readvariablename',false);
     
     % organize data, variable index 1 of table = col 1 of spreadsheet
     yCO2_exp = XLSdata.(1); % store entire yCO2 col
@@ -51,6 +70,7 @@ function fun = GA_CO2Isotherm
         title(sprintf('System Pressure: %d atm',i));
         text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',fval));
     end
+    cd(OldPath);
 end
 
 function fun = Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta)
