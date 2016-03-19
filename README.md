@@ -166,7 +166,8 @@ This function was taken from http://www.mathworks.com/matlabcentral/fileexchange
 * Run ga_isotherm.m by either having ga_isotherm.m open in the MATLAB editor and pressing on the 'Run' button, or
   Enter "ga_isotherm" in MATLAB's command window and press Enter.
 * Follow the instructions to select the appropriate file path, sheet, and cell range of the Excel file containing the experimental data
-  * Note: the range of the data must include the layout shown in the following figure. Make sure to respect this template style but feel free to have any number of columns (only one column of Kp values are required).
-
+  * Note: the range of the data must include the layout shown in **Fig. 1.** Make sure to respect this template style but feel free to have any number of columns (only one column of Kp values are required).
+![fig1](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Excel%20Input%20Data%20Template.png)
+**Fig. 1. Excel Input Data Template**
 * When prompt, decide on exporting the results to a .csv file (either already existing in the path folder of the ga_isotherm.m or enter a new name to create a new file).
   * e.g. type "results.csv" without the quotes and press Enter. This will either overwrite a file named result.csv if it already exists or create a new one if not.
