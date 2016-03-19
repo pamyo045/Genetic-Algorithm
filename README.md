@@ -2,13 +2,13 @@
 ## Contents
 1. Functions
   1. ga_isotherm.m
-  1. ga_isotherm_plot.m
-1. Examples
+  2. ga_isotherm_plot.m
+2. Examples
   1. ga_isotherm.m
     1. MATLAB code output
-  1. ga_isotherm_plot.m
+  2. ga_isotherm_plot.m
     1. MATLAB Command Window Session
-    1. MATLAB code output
+    2. MATLAB code output
 ***
 ## 1. Functions
 ### 1.i. ga_isotherm.m
