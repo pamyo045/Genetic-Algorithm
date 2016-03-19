@@ -2,7 +2,6 @@
 ## Contents
 1. [Functions](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1-functions)
   1. [ga_fitting.m](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1i-ga_fittingm)
-  2. [csvexport.m](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1ii-csvexportm)
 2. [Usage](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#2-usage)
 
 ***
@@ -154,8 +153,6 @@ function fun = nlcon_fun(y_exp,Kp_exp)
 end
 ```
 
-### 1.ii. csvexport.m
-This function was taken from http://www.mathworks.com/matlabcentral/fileexchange/48560-csvexport-filename-cellvals-/content//csvexport.m in order to be able to export results to a .csv file if the user desires to do so and is compatible for all OS platforms (MATLAB's built-in csvwrite and xlswrite have difficulties running on MacOS platforms).
 ***
 ## 2. Usage
 * Run ga_isotherm.m by either having ga_isotherm.m open in the MATLAB editor and pressing on the 'Run' button, or
