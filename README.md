@@ -13,9 +13,9 @@ This function uses MATLAB's built-in function 'ga(...)' to perform a genetic alg
 **The MATLAB code:**
 ```
 function fits = ga_fitting
-    % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
-    % XLSsheet: Kp exp - curve fits
-    % XLSrange: A1:F22
+    % xlsName: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
+    % xlsSheet: Kp exp - curve fits
+    % xlsRange: A1:F22
     
     filterSpec={'*.xls;*xlsx','Excel files (*.xls,*.xlsx)'};
 
