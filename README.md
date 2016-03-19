@@ -1,6 +1,6 @@
 # genetic-algorithm
 ## Contents
-1. [Functions](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1-functions)
+1. [Function](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1-function)
   1. [ga_fitting.m](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1i-ga_fittingm)
 2. [Usage](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#2-usage)
 
