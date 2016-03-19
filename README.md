@@ -115,25 +115,26 @@ function fits = ga_fitting
     cd(oldPath);
 end
 
-function val = Kp_fun(y1,args)
-    b1=args(:,1); b2=args(:,2); b3=args(:,3);
-    c1=args(:,4); c2=args(:,5); c3=args(:,6);
-    gamma=args(:,7); theta=args(:,8);
+% This is the function that you can change is you want to use a different
+% function to fit against. Keep the signature the same (i.e. function val =
+% Kp_fun(y,args)) but change the assignments of the the parameter to
+% args(index_number) accordingly (e.g. add "beta=args(9);" after
+% "theta=args(8);" if beta becomes a new equation parameter used in what 
+% follows after "val = ").
+function val = Kp_fun(y,args)
+    b1=args(1);    b2=args(2); b3=args(3);
+    c1=args(4);    c2=args(5); c3=args(6);
+    gamma=args(7); theta=args(8);
     
-    val = ((1-y1).*(b1./abs(y1+gamma)+...
-        b2.*exp(theta.*y1)+b3)+...
-        y1.*(c1./abs(y1+gamma)+c2.*exp(theta.*y1)+c3));
+    val = ((1-y).*(b1./abs(y+gamma)+...
+        b2.*exp(theta.*y)+b3)+...
+        y.*(c1./abs(y+gamma)+c2.*exp(theta.*y)+c3));
 end
 
 function SSR_fun = residual(y_exp,Kp_exp)
     Kp_model = @(args)Kp_fun(y_exp,args);
     
-    function val = SSR(x)
-        b1=x(:,1); b2=x(:,2); b3=x(:,3);
-        c1=x(:,4); c2=x(:,5); c3=x(:,6);
-        gamma=x(:,7); theta=x(:,8);
-        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
-        
+    function val = SSR(args)        
         val = sumsqr(Kp_exp-Kp_model(args));
     end
     
@@ -143,12 +144,7 @@ end
 function fun = nlcon_fun(y_exp,Kp_exp)
     Kp_model = @(args)Kp_fun(y_exp,args);
         
-    function [c, ceq] = nlcon(x)
-        b1=x(:,1); b2=x(:,2); b3=x(:,3);
-        c1=x(:,4); c2=x(:,5); c3=x(:,6);
-        gamma=x(:,7); theta=x(:,8);
-        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
-        
+    function [c, ceq] = nlcon(args)     
         c = [sumsqr(Kp_exp-Kp_model(args))-0.2];
         ceq = [];
     end
