@@ -19,5 +19,5 @@ This function uses MATLAB's built-in function 'ga(...)' to perform a genetic alg
   * Note: the cell range selected for the data of the Excel file must respect the template in **Fig. 1**. Make sure to respect this template style but feel free to have any number of columns (only one column of Kp values are required). For example, for **Fig. 1** the proper input for the range when prompt would be to type "A1:F22" without the quotes.
 ![fig1](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Excel%20Input%20Data%20Template.png)
 **Fig. 1:** Excel Input Data Template
-* When prompt, decide on exporting the results to a .csv file (either already existing in the path folder of the ga_isotherm.m or enter a new name to create a new file).
+* When prompt, decide on exporting the results to a .csv file (either already existing in the path folder of the ga_fitting.m or enter a new name to create a new file).
   * e.g. type "results.csv" without the quotes and press Enter. This will either overwrite a file named result.csv if it already exists or create a new one if not.
