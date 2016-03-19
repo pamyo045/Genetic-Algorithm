@@ -12,7 +12,7 @@ This function uses MATLAB's built-in function 'ga(...)' to perform a genetic alg
 
 **The MATLAB code:**
 ```
-function fits = ga_isotherm
+function fits = ga_fitting
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
     % XLSrange: A1:F22
