@@ -16,7 +16,7 @@ This code uses MATLAB's inherent function 'ga' to perform a genetic algorithm in
 
 **The MATLAB code:**
 ```
-function fun = GA_CO2Isotherm
+function fun = ga_isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
     % XLSrange: A4:F22
@@ -117,15 +117,20 @@ end
 ```
 
 ### 1.ii. ga_isotherm_plot.m
-This code simply displays a figure with all the optimal parameters found for GA_CO2Isotherm.m after running the code multiple different times which resulted in the lowest SSR.
+This code simply displays a figure with all the optimal parameters found for ga_isotherm.m after running the code multiple different times which resulted in the lowest SSR.
+
+**The MATLAB code:**
+```
+
+```
 ***
 ## 2. Examples
 ### 2.i. ga_isotherm.m
 #### 2.i.a. MATLAB command window session
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image1.png))
+![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image1.png)
 #### 2.i.b. MATLAB code output
 ![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image2.png)
 
 ### 2.ii. ga_isotherm_plot.m
-#### 2.ii.a. MATLAB code output:
+#### 2.ii.a. MATLAB code output
 ![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image3.png)
