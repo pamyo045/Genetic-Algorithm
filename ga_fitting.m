@@ -75,12 +75,16 @@ function fits = ga_fitting
         text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',SSR_min));            
     end
     
+    % Return ga_fitting return variable as fits (a 
+    % structure) with fields pressures, y_exp,
+    % Kp_exp, SSR, and pars.
     fits.pressures = pressures;
     fits.y_exp = y_exp;
     fits.Kp_exp = Kp_exp;
     fits.SSR = SSR;
     fits.pars = fitPars';
 
+    % Prepare output cell array xlsOut to export as .csv file
     xlsOut = xlsData;
     xlsOut((nRows+1):(nRows+nPars),1)=parsName;
     xlsOut((nRows+1):(nRows+nPars),2:nCols)=num2cell(fits.pars);
@@ -93,52 +97,94 @@ function fits = ga_fitting
             end
         end
     end
+    
     if(input('Would you like to export results to a csv file?\nYes (y) or No (n): ','s')=='y')
         xlsOutName=input('Enter a current or new .csv filename, e.g. output.csv: ','s');
-        csvexport(xlsOutName,xlsOut);
+        csv_export(xlsOutName,xlsOut);
     end
     
     cd(oldPath);
 end
 
-function val = Kp_fun(y1,args)
-    b1=args(:,1); b2=args(:,2); b3=args(:,3);
-    c1=args(:,4); c2=args(:,5); c3=args(:,6);
-    gamma=args(:,7); theta=args(:,8);
+% This is the function containing the equation to fit.
+% Returns a function handle to be used in ga(...) 
+% inside the ga_fitting function.
+% This is the function that you can change if you want to use a different
+% equation to fit against. Keep the signature the same (i.e. function val =
+% Kp_fun(y,args)) but change the assignments of the the parameter to
+% args(index_number) accordingly.
+% e.g. add "beta=args(9);" after "theta=args(8);" if beta becomes a new 
+% equation parameter used in what follows after "val = ".
+function val = Kp_fun(y,args)
+    b1=args(1);    b2=args(2); b3=args(3);
+    c1=args(4);    c2=args(5); c3=args(6);
+    gamma=args(7); theta=args(8);
     
-    val = ((1-y1).*(b1./abs(y1+gamma)+...
-        b2.*exp(theta.*y1)+b3)+...
-        y1.*(c1./abs(y1+gamma)+c2.*exp(theta.*y1)+c3));
+    val = ((1-y).*(b1./abs(y+gamma)+...
+        b2.*exp(theta.*y)+b3)+...
+        y.*(c1./abs(y+gamma)+c2.*exp(theta.*y)+c3));
 end
 
+% This is the sum of squared residuals function.
+% Returns a function handle to be used in ga(...) 
+% inside the ga_fitting function.
 function SSR_fun = residual(y_exp,Kp_exp)
     Kp_model = @(args)Kp_fun(y_exp,args);
     
-    function val = SSR(x)
-        b1=x(:,1); b2=x(:,2); b3=x(:,3);
-        c1=x(:,4); c2=x(:,5); c3=x(:,6);
-        gamma=x(:,7); theta=x(:,8);
-        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
-        
+    function val = SSR(args)        
         val = sumsqr(Kp_exp-Kp_model(args));
     end
     
     SSR_fun=@SSR;
 end
 
+% This is the nonlinear constraint function.
+% Returns a function handle to be used in ga(...) 
+% inside the ga_fitting function.
 function fun = nlcon_fun(y_exp,Kp_exp)
     Kp_model = @(args)Kp_fun(y_exp,args);
         
-    function [c, ceq] = nlcon(x)
-        b1=x(:,1); b2=x(:,2); b3=x(:,3);
-        c1=x(:,4); c2=x(:,5); c3=x(:,6);
-        gamma=x(:,7); theta=x(:,8);
-        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
-        
+    function [c, ceq] = nlcon(args)     
         c = [sumsqr(Kp_exp-Kp_model(args))-0.2];
         ceq = [];
     end
     
     fun=@nlcon;
     
+end
+
+% This is a utility function to allow exporting
+% ga_fitting results to a .csv file if the user 
+% desires to do so. Taken online from:
+% http://www.mathworks.com/matlabcentral/fileexchange/48560-csvexport-filename-cellvals-
+function out = csv_export(filename,cellVals)
+    % (C) Nov 25, 2014, Pratik Chhatbar, Feng Lab
+    % MUSC Stroke Center, Charleston, SC
+    % chhatbar@musc.edu, pratikchhatbar@gmail.com
+    
+    out=0;
+    if length(filename)<5 || ~strncmp(filename(end-3:end),'.csv',4)
+        outfile=[filename '.csv'];
+    else
+        outfile=filename;
+    end
+    
+    fh = fopen(outfile,'w'); % open a file with write privileges, will overwrite old versions
+    for ii = 1:size(cellVals,1)
+        for  jj = 1:size(cellVals,2)
+            if jj==1
+                addcoma=[];
+            else
+                addcoma=', ';
+            end
+            if ischar(cellVals{ii,jj})
+                fwrite(fh,[addcoma,cellVals{ii,jj}]);
+            else
+                fwrite(fh,[addcoma,num2str(cellVals{ii,jj},'%f')]);
+            end
+        end
+        fwrite(fh,sprintf('\r\n')); % print line break
+    end
+    fclose(fh); % close file out when done writing
+    out=1;
 end
