@@ -3,214 +3,160 @@
 1. Functions
   1. ga_isotherm.m
   2. ga_isotherm_plot.m
-2. Examples
-  1. ga_isotherm.m
-    1. MATLAB code output
-  2. ga_isotherm_plot.m
-    1. MATLAB Command Window Session
-    2. MATLAB code output
+  3. csvexport.m
 ***
 ## 1. Functions
 ### 1.i. ga_isotherm.m
-This code uses MATLAB's inherent function 'ga' to perform a genetic algorithm in order to find the minimum of a function - in this case the smallest sum of squared residual (SSR) between model parameters and experimental values within an excel file.
+This function uses MATLAB's built-in function 'ga(...)' to perform a genetic algorithm in order to find the minimum of an objective function (in this case the smallest sum of squared residual (SSR) between model parameters and experimental values within an excel file).
 
 **The MATLAB code:**
 ```
-function fun = ga_isotherm
+function fits = ga_isotherm
     % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
     % XLSsheet: Kp exp - curve fits
-    % XLSrange: A4:F22
-    XLSname = 'Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx';
-    XLSsheet = 'Kp exp - curve fits';
-    XLSrange = 'A4:F22';
+    % XLSrange: A1:F22
+    
+    filterSpec={'*.xls;*xlsx','Excel files (*.xls,*.xlsx)'};
+
+    [fileName,pathName,~]=uigetfile(...
+        filterSpec,'Pick a file','MultiSelect','on');
+    
+    xlsName=fileName;
+    
+    oldPath=cd(pathName); % stores old path and changes to new path
+    
+    [~,sheetNames]=xlsfinfo(fileName);
+    nSheets=length(sheetNames);
+    
+    [sheetIndex,~]=listdlg('PromptString','Select a file:',...
+                'SelectionMode','single',...
+                'ListString',sheetNames);
+    xlsSheet=sheetNames{sheetIndex};
+    
+    prompt = 'Enter Excel sheet range of the experimental data:';
+    dlgTitle = 'Select range';
+    numLines = 1;
+    defRange = {'A1:F22'};
+    xlsRange = inputdlg(prompt,dlgTitle,numLines,defRange);
 
     % extract experimental Kp values from Excel file and assign each col to
     % appropriate pressure trials
-    XLSdata = readtable(XLSname,'sheet',XLSsheet,'range',XLSrange,'readvariablename',false);
-
+    [~,~,xlsData] = xlsread(xlsName,xlsSheet,xlsRange{1});
+    
+    nRows=size(xlsData,1);
+    nCols=size(xlsData,2);
+    pressures=zeros(1,nCols-1);
+    
+    nPars=8;
+    parsName={'B1','B2','B3','C1','C2','C3','gamma','lambda'};
+    for c=1:nCols-1
+        pressures(1,c)=str2double(cell2mat(regexp(xlsData{2,1+c},'\d*','match')));
+    end
+    
+    iRow=4;
     % organize data, variable index 1 of table = col 1 of spreadsheet
-    yCO2_exp = XLSdata.(1); % store entire yCO2 col
-    temp = XLSdata.(2); % assign temp array to col 2 data (i.e. 1atm data)
-    yKp_exp_1atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))]; % assign array without the zero Kp values along with corresponding yCO2 in a 2D array
-    temp = XLSdata.(3);
-    yKp_exp_2atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(4);
-    yKp_exp_3atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(5);
-    yKp_exp_4atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(6);
-    yKp_exp_5atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
+    y_exp = cell2mat(xlsData(iRow:end,1)); % store entire yCO2 col
+    Kp_exp = zeros(nRows-(iRow-1),nCols-1);
+    for iCol=1:nCols-1
+        Kp_exp(:,iCol)=cell2mat(xlsData(iRow:end,iCol+1));
+    end
 
-    yKp_exp = {yKp_exp_1atm yKp_exp_2atm yKp_exp_3atm yKp_exp_4atm yKp_exp_5atm};
     figure;
-
-    for i=1:length(yKp_exp)
-        SSR = residual(yKp_exp{i});
+    fitPars=zeros(nCols-1,nPars);
+    SSR=zeros(1,nCols-1);
+    for i=1:nCols-1
+        SSR_fun = residual(y_exp,Kp_exp(:,i));
 
         options = gaoptimset('vectorized','off','TolFun',1e-9);
-        [fun,fval] = ga(SSR,8,[],[],[],[],[],[],nlconsy1(yKp_exp{i}),options);
-        fprintf('Trial: %d atm \nSSR=%.4g \n[B1,B2,B3,C1,C2,C3,gamma,lambda]=[%.4g,%.4g,%.4g,%.4g,%.4g,%.4g,%.4g,%.4g]\n',...
-            i,fval,fun(1),fun(2),fun(3),fun(4),fun(5),fun(6),fun(7),fun(8));
-
-        for j=1:length(fun)
-            optpars{j}=fun(j);
-        end
-
+        [fitPars_min,SSR_min] = ga(SSR_fun,nPars,[],[],[],[],[],[],nlcon_fun(y_exp,Kp_exp(:,i)),options);
+        fprintf('Trial: %d atm \nSSR=%.4g \n[B1,B2,B3,C1,C2,C3,gamma,lambda]=[%s]\n',...
+            pressures(i),SSR_min,sprintf('%#.4g ',fitPars_min));
+              
+        fitPars(i,:)=fitPars_min(:);
+        SSR(1,i)=SSR_min;
         yModel = linspace(0,1,100);
-
+        
         subplot(3,2,i);
-        plot(yKp_exp{i}(:,1), yKp_exp{i}(:,2),'or',...
-            yModel,Kp_model(yModel,optpars{:})),'-b';
-        ylim([0 1.10*yKp_exp{i}(1,2)]);
+        plot(y_exp,Kp_exp(:,i),'or',...
+            yModel,Kp_fun(yModel,fitPars(i,:))),'-b';
+        ylim([0 1.10*Kp_exp(1,i)]);
         xlim([0 1]);
         xl=xlim;
         yl=ylim;
         legend('Experimental','Fitted Model');
         title(sprintf('System Pressure: %d atm',i));
-        text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',fval));
+        text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',SSR_min));            
     end
+    
+    fits.pressures = pressures;
+    fits.y_exp = y_exp;
+    fits.Kp_exp = Kp_exp;
+    fits.SSR = SSR;
+    fits.pars = fitPars';
+
+    xlsOut = xlsData;
+    xlsOut((nRows+1):(nRows+nPars),1)=parsName;
+    xlsOut((nRows+1):(nRows+nPars),2:nCols)=num2cell(fits.pars);
+    xlsOut(end+1,1)={'SSR'};
+    xlsOut(end,2:nCols)=num2cell(fits.SSR);
+    for i=1:size(xlsOut,1)
+        for j=1:size(xlsOut,2)
+            if(isnan(xlsOut{i,j}))
+                xlsOut{i,j}='';
+            end
+        end
+    end
+    if(input('Would you like to export results to a csv file?\nYes (y) or No (n): ','s')=='y')
+        xlsOutName=input('Enter a current or new .csv filename, e.g. output.csv: ','s');
+        csvexport(xlsOutName,xlsOut);
+    end
+    
+    cd(oldPath);
 end
 
-  function fun = Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta)
-      fun=((1-y1).*(b1./abs(y1+gamma)+...
-          b2.*exp(theta.*y1)+b3)+...
-          y1.*(c1./abs(y1+gamma)+c2.*exp(theta.*y1)+c3));
-  end
-
-  function SSR = residual(yKp_exp)
-      y1=yKp_exp(:,1);
-      Kp_exp=yKp_exp(:,2);
-
-      Kp_mod = @(b1,b2,b3,c1,c2,c3,gamma,theta)Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta);
-
-      function fit = fitness(x)
-          b1=x(:,1); b2=x(:,2); b3=x(:,3);
-          c1=x(:,4); c2=x(:,5); c3=x(:,6);
-          gamma=x(:,7); theta=x(:,8);
-          args={b1,b2,b3,c1,c2,c3,gamma,theta};
-
-          fit = sumsqr(Kp_exp-Kp_mod(args{:}));
-      end
-
-      SSR=@fitness;
-  end
-
-  function fun = nlconsy1(yKp_exp)
-      y1=yKp_exp(:,1);
-      Kp_exp=yKp_exp(:,2);
-
-      Kp_mod = @(b1,b2,b3,c1,c2,c3,gamma,theta)Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta);
-
-      function [c, ceq] = nlconsx(x)
-          b1=x(:,1); b2=x(:,2); b3=x(:,3);
-          c1=x(:,4); c2=x(:,5); c3=x(:,6);
-          gamma=x(:,7); theta=x(:,8);
-          args={b1,b2,b3,c1,c2,c3,gamma,theta};
-
-          c = [sumsqr(Kp_exp-Kp_mod(args{:}))-0.2];
-          ceq = [];
-      end
-
-      fun=@nlconsx;
-
-  end
-```
-
-### 1.ii. ga_isotherm_plot.m
-This code simply displays a figure with all the optimal parameters found for ga_isotherm.m after running the code multiple different times which resulted in the lowest SSR.
-
-**The MATLAB code:**
-```
-function fun = ga_isotherm_plot
-    % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
-    % XLSsheet: Kp exp - curve fits
-    % XLSrange: A4:F22
-    XLSname = 'Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx';
-    XLSsheet = 'Kp exp - curve fits';
-    XLSrange = 'A4:F22';
+function val = Kp_fun(y1,args)
+    b1=args(:,1); b2=args(:,2); b3=args(:,3);
+    c1=args(:,4); c2=args(:,5); c3=args(:,6);
+    gamma=args(:,7); theta=args(:,8);
     
-    % extract experimental Kp values from Excel file and assign each col to
-    % appropriate pressure trials
-    XLSdata = readtable(XLSname,'sheet',XLSsheet,'range',XLSrange,'readvariablename',false);
-    
-    % organize data, variable index 1 of table = col 1 of spreadsheet
-    yCO2_exp = XLSdata.(1); % store entire yCO2 col
-    temp = XLSdata.(2); % assign temp array to col 2 data (i.e. 1atm data)
-    yKp_exp_1atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))]; % assign array without the zero Kp values along with corresponding yCO2 in a 2D array
-    temp = XLSdata.(3);
-    yKp_exp_2atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(4);
-    yKp_exp_3atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(5);
-    yKp_exp_4atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    temp = XLSdata.(6);
-    yKp_exp_5atm = [yCO2_exp(~isnan(temp)), temp(~isnan(temp))];
-    
-    yKp_exp = {yKp_exp_1atm yKp_exp_2atm yKp_exp_3atm yKp_exp_4atm yKp_exp_5atm};
-    figure;
-    
-    % After multiple executions of this code, the best pars for each
-    % pressure scenerio that I could extract (lowest SSR) are the
-    % following:
-    pars1={21.27,14.39,-4.77,-5.57,0.70,1.39,3.23,-1.26e+02};
-    pars2={38.91,7.383,-4.24,-44.43,5.997,5.77,6.8,-233.2};
-    pars3={10.46,4.955,0.4485,-5.433,10.26,0.217,24.06,-90.88};
-    pars4={49.42,3.604,-3.698,-67.32,-5.171,5.85,10.58,-184.8};
-    pars5={13.68,3.404,-1.895,-19.71,3.927,3.42,4.84,-180.2};
-    
-    for i=1:length(yKp_exp) 
-        SSR = residual(yKp_exp{i});
-
-        yModel = linspace(0,1,100);
-        
-        if i==1, optpars=pars1;
-            elseif i==2, optpars=pars2;
-            elseif i==3, optpars=pars3;
-            elseif i==4, optpars=pars4;
-            elseif i==5, optpars=pars5;
-        end
-        
-        subplot(3,2,i);
-        plot(yKp_exp{i}(:,1), yKp_exp{i}(:,2),'or',...
-            yModel,Kp_model(yModel,optpars{:})),'-b';
-        ylim([0 1.10*yKp_exp{i}(1,2)]);
-        xlim([0 1]);
-        xl=xlim;
-        yl=ylim;
-        legend('Experimental','Fitted Model');
-        title(sprintf('System Pressure: %d atm',i));
-        text(0.5*xl(2),0.5*yl(2),sprintf('SSR=%.4f',SSR(optpars)));
-    end
-   
+    val = ((1-y1).*(b1./abs(y1+gamma)+...
+        b2.*exp(theta.*y1)+b3)+...
+        y1.*(c1./abs(y1+gamma)+c2.*exp(theta.*y1)+c3));
 end
 
-    function fun = Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta)
-        fun=((1-y1).*(b1./abs(y1+gamma)+...
-            b2.*exp(theta.*y1)+b3)+...
-            y1.*(c1./abs(y1+gamma)+c2.*exp(theta.*y1)+c3));
+function SSR_fun = residual(y_exp,Kp_exp)
+    Kp_model = @(args)Kp_fun(y_exp,args);
+    
+    function val = SSR(x)
+        b1=x(:,1); b2=x(:,2); b3=x(:,3);
+        c1=x(:,4); c2=x(:,5); c3=x(:,6);
+        gamma=x(:,7); theta=x(:,8);
+        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
+        
+        val = sumsqr(Kp_exp-Kp_model(args));
     end
+    
+    SSR_fun=@SSR;
+end
 
-    function SSR = residual(yKp_exp)
-        y1=yKp_exp(:,1);
-        Kp_exp=yKp_exp(:,2);
-
-        Kp_mod = @(b1,b2,b3,c1,c2,c3,gamma,theta)Kp_model(y1,b1,b2,b3,c1,c2,c3,gamma,theta);
-
-        function fit = fitness(args)
-            fit = sumsqr(Kp_exp-Kp_mod(args{:}));
-        end
-
-        SSR=@fitness;
+function fun = nlcon_fun(y_exp,Kp_exp)
+    Kp_model = @(args)Kp_fun(y_exp,args);
+        
+    function [c, ceq] = nlcon(x)
+        b1=x(:,1); b2=x(:,2); b3=x(:,3);
+        c1=x(:,4); c2=x(:,5); c3=x(:,6);
+        gamma=x(:,7); theta=x(:,8);
+        args=[b1,b2,b3,c1,c2,c3,gamma,theta];
+        
+        c = [sumsqr(Kp_exp-Kp_model(args))-0.2];
+        ceq = [];
     end
+    
+    fun=@nlcon;
+    
+end
 ```
+
+### 1.ii. csvexport.m
+This function was taken from http://www.mathworks.com/matlabcentral/fileexchange/48560-csvexport-filename-cellvals-/content//csvexport.m in order to be able to export results to a .csv file if the user desires to do so and is compatible for all OS platforms (MATLAB's built-in csvwrite and xlswrite have difficulties running on MacOS platforms).
 ***
-## 2. Examples
-### 2.i. ga_isotherm.m
-#### 2.i.a. MATLAB command window session
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image1.png)
-#### 2.i.b. MATLAB code output
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image2.png)
-
-### 2.ii. ga_isotherm_plot.m
-#### 2.ii.a. MATLAB code output
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image3.png)
