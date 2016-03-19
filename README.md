@@ -1,10 +1,9 @@
 # genetic-algorithm
 ## Contents
-1. Functions
+1. [Functions](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1.%functions)
   1. ga_isotherm.m
   2. csvexport.m
-2. Usage
-
+2. [Usage](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#2.%usage)
 
 ***
 ## 1. Functions
@@ -162,7 +161,7 @@ end
 ### 1.ii. csvexport.m
 This function was taken from http://www.mathworks.com/matlabcentral/fileexchange/48560-csvexport-filename-cellvals-/content//csvexport.m in order to be able to export results to a .csv file if the user desires to do so and is compatible for all OS platforms (MATLAB's built-in csvwrite and xlswrite have difficulties running on MacOS platforms).
 ***
-## Usage
+## 2. Usage
 * Run ga_isotherm.m by either having ga_isotherm.m open in the MATLAB editor and pressing on the 'Run' button, or
   Enter "ga_isotherm" in MATLAB's command window and press Enter.
 * Follow the instructions to select the appropriate file path, sheet, and cell range of the Excel file containing the experimental data
