@@ -1,8 +1,11 @@
 # genetic-algorithm
 ## Contents
 1. Functions
+
   i. ga_isotherm.m
+  
   ii. ga_isotherm_plot.m
+  
 2. Examples
   i. ga_isotherm.m
     a. MATLAB code output
