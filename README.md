@@ -7,7 +7,7 @@
 
 ***
 ## 1. Functions
-### 1.i. ga_isotherm.m
+### 1.i. ga_fitting.m
 This function uses MATLAB's built-in function 'ga(...)' to perform a genetic algorithm in order to find the minimum of an objective function (in this case the smallest sum of squared residual (SSR) between model parameters and experimental values within an excel file).
 
 **The MATLAB code:**
