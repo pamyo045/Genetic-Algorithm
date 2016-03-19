@@ -13,7 +13,7 @@ This function uses MATLAB's built-in function 'ga(...)' to perform a genetic alg
 ## 2. Usage
 * Run ga_isotherm.m by either having ga_isotherm.m open in the MATLAB editor and pressing on the 'Run' button, or
   Enter "ga_isotherm" in MATLAB's command window and press Enter.
-* Follow the instructions to select the appropriate file path, sheet, and cell range of the Excel file containing the experimental data (see 'pamyo045/genetic-algorithm/Resources/Excel Input Data Template.xlsx' for template as shown in **Fig. 1**).
+* Follow the instructions to select the appropriate file path, sheet, and cell range of the Excel file containing the experimental data (see [pamyo045/genetic-algorithm/Resources/Excel Input Data Template.xlsx](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Excel%20Input%20Data%20Template.xlsx) for template as shown in **Fig. 1**).
   * Note: the cell range selected for the data of the Excel file must respect the template in **Fig. 1**. Make sure to respect this template style but feel free to have any number of columns (only one column of Kp values are required). For example, for **Fig. 1** the proper input for the range when prompt would be to type "A1:F22" without the quotes.
 ![fig1](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Excel%20Input%20Data%20Template.png)
 **Fig. 1:** Excel Input Data Template
