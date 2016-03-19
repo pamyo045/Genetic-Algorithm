@@ -1,9 +1,9 @@
 # genetic-algorithm
 ## Contents
-1. [Functions](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1.%functions)
-  1. ga_isotherm.m
-  2. csvexport.m
-2. [Usage](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#2.%usage)
+1. [Functions](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1-functions)
+  1. [ga_isotherm.m](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1i-ga_isothermm)
+  2. [csvexport.m](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#1ii-csvexportm)
+2. [Usage](https://github.com/pamyo045/genetic-algorithm/blob/master/README.md#2-usage)
 
 ***
 ## 1. Functions
