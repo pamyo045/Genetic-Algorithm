@@ -2,8 +2,8 @@
 ## Contents
 1. Functions
   1. ga_isotherm.m
-  2. ga_isotherm_plot.m
-  3. csvexport.m
+  2. csvexport.m
+2. Usage
 ***
 ## 1. Functions
 ### 1.i. ga_isotherm.m
@@ -160,3 +160,10 @@ end
 ### 1.ii. csvexport.m
 This function was taken from http://www.mathworks.com/matlabcentral/fileexchange/48560-csvexport-filename-cellvals-/content//csvexport.m in order to be able to export results to a .csv file if the user desires to do so and is compatible for all OS platforms (MATLAB's built-in csvwrite and xlswrite have difficulties running on MacOS platforms).
 ***
+## Usage
+* Run ga_isotherm.m by either having ga_isotherm.m open in the MATLAB editor and pressing on the 'Run' button, or
+  Enter "ga_isotherm" in MATLAB's command window and press Enter.
+* Follow the instructions to select the appropriate file path, sheet, and cell range of the Excel file containing the experimental data
+  * Note: the range of the data must include the layout shown in the following figure. Make sure to respect this template style but feel free to have any number of columns (only one column of Kp values are required).
+* When prompt, decide on exporting the results to a .csv file (either already existing in the path folder of the ga_isotherm.m or enter a new name to create a new file).
+  * e.g. type "results.csv" without the quotes and press Enter. This will either overwrite a file named result.csv if it already exists or create a new one if not.
