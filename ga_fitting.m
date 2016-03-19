@@ -1,7 +1,7 @@
-function fits = ga_isotherm
-    % XLSname: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
-    % XLSsheet: Kp exp - curve fits
-    % XLSrange: A1:F22
+function fits = ga_fitting
+    % xlsName: Binary - N2-CO2 with HISIV3000 silicalite combo graph.xlsx
+    % xlsSheet: Kp exp - curve fits
+    % xlsRange: A1:F22
     
     filterSpec={'*.xls;*xlsx','Excel files (*.xls,*.xlsx)'};
 
