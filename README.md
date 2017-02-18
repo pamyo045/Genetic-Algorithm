@@ -1,4 +1,4 @@
-# Genetic Algorithm
+# Isotherm Fitting App
 ## Excel Input File Template
 ![](https://github.com/tatumalenko/genetic-algorithm/blob/master/assets/excel_input_data_template.png)
 ## Screenshot of Running App
