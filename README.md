@@ -127,10 +127,10 @@ This code simply displays a figure with all the optimal parameters found for ga_
 ## 2. Examples
 ### 2.i. ga_isotherm.m
 #### 2.i.a. MATLAB command window session
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image1.png)
+![](https://github.com/tatumalenko/genetic-algorithm/blob/master/assets/excel_input_data_template.png)
 #### 2.i.b. MATLAB code output
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image2.png)
+![](https://github.com/tatumalenko/genetic-algorithm/blob/master/assets/screenshot_genetic_fitting_app.png)
 
 ### 2.ii. ga_isotherm_plot.m
 #### 2.ii.a. MATLAB code output
-![](https://github.com/pamyo045/genetic-algorithm/blob/master/Resources/Image3.png)
+![](https://github.com/tatumalenko/genetic-algorithm/blob/master/assets/Image3.png)

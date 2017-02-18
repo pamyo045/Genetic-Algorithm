@@ -1,0 +1,69 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="1576791164" file="/Users/patriceamyot/Google Drive/Dev Library/MATLAB/Repositories/genetic-algorithm/Isotherm Fitting.prj" location="/Users/patriceamyot/Google Drive/Dev Library/MATLAB/Repositories/genetic-algorithm" name="Isotherm Fitting" target="target.mlapps" target-name="Package App">
+    <param.appname>Isotherm Fitting</param.appname>
+    <param.authnamewatermark>Patrice Amyot</param.authnamewatermark>
+    <param.email>pamyo045@uottawa.ca</param.email>
+    <param.company>uOttawa</param.company>
+    <param.icon />
+    <param.icons />
+    <param.summary>For prof. Tezel's adsorption group isotherm model fittings.</param.summary>
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}/Resources/Screenshot_GeneticFittingApp.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Global Optimization Toolbox</item>
+      <item>Optimization Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>90</item>
+      <item>6</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.0</item>
+      <item>3.4</item>
+      <item>7.4</item>
+    </param.products.version>
+    <param.platforms />
+    <param.output>/Users/patriceamyot/Google Drive/Dev Library/MATLAB/Repositories/genetic-algorithm</param.output>
+    <param.guid>a35b1510-1911-4cdc-8c30-e2e0efc06631</param.guid>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.description />
+      <param.version />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}/GeneticFitting.mlapp</file>
+    </fileset.main>
+    <fileset.depfun />
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file location="/Users/patriceamyot/Google Drive/Dev Library/MATLAB/Repositories" name="genetic-algorithm" optional="false">/Users/patriceamyot/Google Drive/Dev Library/MATLAB/Repositories/genetic-algorithm</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/Applications/MATLAB_R2016a.app</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.11.4</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>maci64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
